@@ -111,27 +111,77 @@ const slideNext = function () {
 
     updateSliderPos()
 }
+/* 
+1. Checks if the current slide is the last one.
+2.If yes, resets to the first slide.
+3.If not, increments the slide position.
+4.Then calls updateSliderPos() to reflect the change in the UI.
+5.The slideNext function is bound to a "next" button click.
+*/
 
 heroSliderNextBtn.addEventListener("click", slideNext)
 
+/* 
+1.Adds an event listener to the heroSliderNextBtn DOM element.
+2.On a "click" event, it calls the slideNext function.
+3.
+*/
+
 const slidePrev = function () {
     if (currentSlidePos <= 0){
-        heroSliderItems.length - 1
+        currentSlidePos = heroSliderItems.length - 1
     }else {
         currentSlidePos--;
     }
 
     updateSliderPos()
 }
+/* 
+1.Checks if the current slide is the first one (i.e., index 0 or less).
+2.If yes, it wraps around to the last slide.
+
+heroSliderItems.length - 1 gives you the index of the last item in the slider.
+3.If you’re not on the first slide, just go to the previous slide by decrementing currentSlidePos.
+*/
 
 heroSliderPrevBtn.addEventListener("click", slidePrev)
+/* 
+1.Adds an event listener to the heroSliderNextBtn DOM element.
+2.On a "click" event, it calls the slideNext function.
+3.
+*/
 
 /* == AUTO-SLIDE */
 
 let autoSlideInterval;
-
+//Declares a global variable autoSlideInterval to hold the interval ID.
 const autoSlide = function() {
     autoSlideInterval = setInterval(function () {
         slideNext();
     },7000)
 }
+/* Defines autoSlide as a function that starts a repeating call to slideNext() every 7000 milliseconds (7 seconds). */
+
+addEventOnElements([heroSliderNextBtn,heroSliderPrevBtn], "mouseover" , function(){
+    clearInterval(autoSlideInterval)
+})
+
+/* 
+1.addEventOnElements(...) — likely a custom helper function you've defined to add event listeners to multiple elements at once. to add the same event listener (toggleNavbar) to multiple elements stored in navTogglers.
+2.[heroSliderNextBtn, heroSliderPrevBtn] — an array of DOM elements (your navigation buttons).
+3."mouseover" — the event you're listening for (when the mouse hovers over these buttons).
+4.function() { clearInterval(autoSlideInterval); } — stops the automatic sliding when the user hovers over either button.
+*/
+
+addEventOnElements([heroSliderNextBtn,heroSliderPrevBtn], "mouseout" , autoSlide)
+/* 
+1.When the user moves their mouse out of either button, it calls autoSlide(), which (presumably) restarts the setInterval.
+*/
+
+window.addEventListener("load" , autoSlide)
+
+/* 
+is correct and ensures that the autoSlide function starts only after the entire page has fully loaded, including all styles, images, and other resources.
+
+
+*/
