@@ -185,3 +185,78 @@ is correct and ensures that the autoSlide function starts only after the entire 
 
 
 */
+
+/* parallax effect */
+
+const parallaxItems = document.querySelectorAll("[data-parallax-item]")
+//This code selects all elements in the DOM that have the attribute data-parallax-item, and stores them in the parallaxItems NodeList.
+
+let x, y;
+/* 
+This declares two variables, x and y, using let, but does not assign them any values yet.
+
+So:
+
+x is declared and initially set to undefined.
+
+y is declared and also initially undefined.
+
+This is valid JavaScript syntax, commonly used when you plan to assign values to these variables later — for example, in mouse movement tracking, parallax calculations, or coordinates.
+*/
+
+
+/* 
+
+Adds an event listener to the entire browser window.
+
+This function runs every time the mouse moves.
+
+
+*/
+window.addEventListener("mousemove", function(event){
+    
+    x=(event.clientX / window.innerWidth * 10) - 5;
+    /* 
+    event.clientX = current horizontal position of the mouse in the viewport.
+
+    window.innerWidth = total width of the viewport.
+
+    This calculates a normalized value between -5 and +5:
+
+    When the mouse is on the left edge, x ≈ -5
+
+    When the mouse is on the right edge, x ≈ +5
+    */
+    y=(event.clientY / window.innerHeight * 10) - 5;
+    /* 
+    Same as above, but for vertical movement.
+
+    When the mouse is at the top, y ≈ -5
+
+    When the mouse is at the bottom, y ≈ +5
+    */
+
+    //reverse the number eg 20 -> -20 , -5 -> 5
+    x= -x;
+    y= -y;
+
+    /* 
+    Reverses the values to make the elements move opposite the mouse direction.
+
+    For example, moving the mouse to the right moves elements to the left, enhancing the depth illusion.
+
+
+    */
+
+    for(let i = 0, len = parallaxItems.length; i < len; i++)
+        parallaxItems[i].style.transform = `translate3d(${x}px, ${y}px, 0px)`;
+
+    /* 
+    for (...) parallaxItems[i].style.transform = ...
+    Loops through all elements with the data-parallax-item attribute (already stored in parallaxItems).
+
+    Applies a transform: translate3d(...) to each element:
+
+    translate3d(${x}px, ${y}px, 0px) moves the element slightly in X and Y directions based on the mouse.
+    */
+})
